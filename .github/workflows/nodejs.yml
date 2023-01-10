@@ -9,10 +9,11 @@ on:
 jobs:
   build:
     
-    runs-on: ubunt-latest
+    runs-on: ${{ matrix.os }}
     
     strategy:
       matrix:
+        os: [ubunt-latest, windows-2016]
         node-version: [12.x, 14.x, 16.x]
     
     steps:
@@ -21,4 +22,8 @@ jobs:
       uses:  actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci && npm run build --if-present && npm test
+    - name: npm install and test
+      run: |
+        npm install
+        npm run build --if-present 
+        npm test
